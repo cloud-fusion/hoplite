@@ -2,6 +2,7 @@ package com.sksamuel.hoplite.onepassword
 
 import com.sksamuel.hoplite.ConfigFailure
 import com.sksamuel.hoplite.ConfigLoaderBuilder
+import com.sksamuel.hoplite.ExperimentalHoplite
 import com.sksamuel.hoplite.fp.Validated
 import com.sksamuel.hoplite.parsers.PropsPropertySource
 import io.kotest.core.spec.style.FunSpec
@@ -10,6 +11,7 @@ import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.types.shouldBeInstanceOf
 import java.util.Properties
 
+@OptIn(ExperimentalHoplite::class)
 class OnePasswordContextResolverTest : FunSpec() {
   init {
 
