@@ -997,18 +997,18 @@ predefined implementations:
 ## Add on Modules
 
 Hoplite makes available several other modules that add functionality outside of the main core module. They are in
-seperate modules because they bring in dependencies from those projects and so the modules are optional.
+separate modules because they bring in dependencies from those projects and so the modules are optional.
 
 | Module                        | Function                                                                                                |
 |:------------------------------|:--------------------------------------------------------------------------------------------------------|
 | hoplite-arrow                 | Provides decoders for common arrow types                                                                |
 | hoplite-aws                   | Provides decoders for aws `Region` type and a preprocessor for AWS Secrets Manager and Parameter Store. |
 | hoplite-aws2                  | Provides decoders for aws `Region` type using the AWS v2 SDK.                                           |
-| hoplite-azure                 | Provides a preprocessor for retreiving values from Azure Key Vault.                                     |
+| hoplite-azure                 | Provides a preprocessor for retrieving values from Azure Key Vault.                                     |
 | hoplite-onepassword           | Provides a preprocessor and context resolver for retrieving values from 1Password.                      |
-| hoplite-consul                | Provides a preprocessor for retreiving values from a Consul instance.                                   |
+| hoplite-consul                | Provides a preprocessor for retrieving values from a Consul instance.                                   |
 | hoplite-datetime              | Provides decoders for [kotlinx datetime](https://github.com/Kotlin/kotlinx-datetime).                   |
-| hoplite-gcp                   | Provides a preprocessor for retreiving values from Google Cloud Platform Secrets Manager.               |
+| hoplite-gcp                   | Provides a preprocessor for retrieving values from Google Cloud Platform Secrets Manager.               |
 | hoplite-hdfs                  | Provides decoder for hadoop `Path`                                                                      |
 | hoplite-hikaricp              | Provides decoder for `HikariDataSource`                                                                 |
 | hoplite-micrometer-datadog    | Provides a decoder for Micrometer's `DatadogConfig` registry                                            |
