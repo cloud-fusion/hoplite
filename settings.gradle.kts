@@ -15,6 +15,7 @@ plugins {
 include(
    ":hoplite-core",
    ":hoplite-azure",
+   ":hoplite-onepassword",
    ":hoplite-aws",
    ":hoplite-aws2",
    ":hoplite-aws-kotlin",
