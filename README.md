@@ -702,10 +702,42 @@ These preprocessors must be added to the `ConfigBuilder` before they take effect
 |:--------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `AwsSecretsManagerPreprocessor` | Replaces strings of the form awssm://key by looking up the value of 'key' from [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/).<br/><br/>This preprocessor requires the `hoplite-aws` module to be added to the classpath.                                                                              |
 | `AzureKeyVaultPreprocessor`     | Replaces strings of the form azurekeyvault://key by looking up the value of 'key' from [Azure Key Vault](https://docs.microsoft.com/en-us/azure/key-vault/).<br/><br/>This preprocessor requires the `hoplite-azure` module to be added to the classpath.                                                              |
+| `OnePasswordPreprocessor`       | Replaces full-string values of the form `op://vault/item/field` by looking up the referenced value from [1Password](https://developer.1password.com/docs/cli/secret-reference-syntax/).<br/><br/>This preprocessor requires the `hoplite-onepassword` module to be added to the classpath.                            |
 | `ParameterStorePreprocessor`    | Replaces strings of the form ${ssm:key} by looking up the value of 'key' from the [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html).<br/><br/>This preprocessor requires the `hoplite-aws` module to be added to the classpath. |
 | `ConsulConfigPreprocessor`      | Replaces strings of the form consul://key by looking up the value of 'key' from a [Consul](https://www.consul.io/) server.<br/><br/>This preprocessor requires the `hoplite-consul` module to be added to the classpath.                                                                                               |
 | `VaultSecretPreprocessor`       | Replaces strings of the form vault://key by looking up the value of 'key' from a [Vault](https://www.vaultproject.io/) instance.<br/><br/>This preprocessor requires the `hoplite-vault` module to be added to the classpath.                                                                                          |
 | `GcpSecretManagerPreprocessor`  | Replaces strings of the form `gcpsm://projects/{projectId}/secrets/{secretName}/versions/{version:latest}` by looking up the value from a [Google Cloud Secret Manager](https://cloud.google.com/secret-manager) instance.<br/><br/>This preprocessor requires the `hoplite-gcp` module to be added to the classpath.  |
+
+### 1Password
+
+Add the `hoplite-onepassword` module to your build to resolve native 1Password secret references:
+
+```kotlin
+ConfigLoaderBuilder.default()
+  .addPreprocessor(OnePasswordPreprocessor())
+```
+
+Then use full secret references directly in config:
+
+```yaml
+database:
+  password: op://Engineering/Database/password
+```
+
+If you prefer resolvers, use the `op` context with either the prefix or embedded form:
+
+```kotlin
+ConfigLoaderBuilder.newBuilder()
+  .addResolver(OnePasswordContextResolver())
+```
+
+```yaml
+database:
+  password: op://Engineering/Database/password
+  url: jdbc:postgresql://${{ op:Engineering/Database/host }}:${{ op:Engineering/Database/port }}/app
+```
+
+Authentication is handled by the installed `op` CLI. For local development, rely on an existing signed-in 1Password session or desktop integration. For headless environments, provide a supported CLI authentication environment such as `OP_SERVICE_ACCOUNT_TOKEN`.
 
 
 
@@ -965,17 +997,18 @@ predefined implementations:
 ## Add on Modules
 
 Hoplite makes available several other modules that add functionality outside of the main core module. They are in
-seperate modules because they bring in dependencies from those projects and so the modules are optional.
+separate modules because they bring in dependencies from those projects and so the modules are optional.
 
 | Module                        | Function                                                                                                |
 |:------------------------------|:--------------------------------------------------------------------------------------------------------|
 | hoplite-arrow                 | Provides decoders for common arrow types                                                                |
 | hoplite-aws                   | Provides decoders for aws `Region` type and a preprocessor for AWS Secrets Manager and Parameter Store. |
 | hoplite-aws2                  | Provides decoders for aws `Region` type using the AWS v2 SDK.                                           |
-| hoplite-azure                 | Provides a preprocessor for retreiving values from Azure Key Vault.                                     |
-| hoplite-consul                | Provides a preprocessor for retreiving values from a Consul instance.                                   |
+| hoplite-azure                 | Provides a preprocessor for retrieving values from Azure Key Vault.                                     |
+| hoplite-onepassword           | Provides a preprocessor and context resolver for retrieving values from 1Password.                      |
+| hoplite-consul                | Provides a preprocessor for retrieving values from a Consul instance.                                   |
 | hoplite-datetime              | Provides decoders for [kotlinx datetime](https://github.com/Kotlin/kotlinx-datetime).                   |
-| hoplite-gcp                   | Provides a preprocessor for retreiving values from Google Cloud Platform Secrets Manager.               |
+| hoplite-gcp                   | Provides a preprocessor for retrieving values from Google Cloud Platform Secrets Manager.               |
 | hoplite-hdfs                  | Provides decoder for hadoop `Path`                                                                      |
 | hoplite-hikaricp              | Provides decoder for `HikariDataSource`                                                                 |
 | hoplite-micrometer-datadog    | Provides a decoder for Micrometer's `DatadogConfig` registry                                            |
